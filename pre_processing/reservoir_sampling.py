@@ -15,6 +15,21 @@ be returned at the end of parsing the arbitrarily-large stream.
 Reservoir sampling is equivalent to solving the problem of picking K entries with uniform probability from a stream of
 unknown size.
 
+We can use the Law of Large Numbers to confirm that the means of the reservoir samples is close to the mean of the
+streams.  In other words, the mean of the stream of integers up to 100 is 50, and the mean of multiple reservoir
+samples on streams of that length and composition should also be close to 50.
+
+>>> eps = 1
+>>> stream_size = 100
+>>> sample_size = 20
+>>> stream_count = 1000
+>>> streams = [[x for x in range(stream_size)] for y in range(stream_count)]
+>>> samples = [reservoir_sample(x, sample_size) for x in streams]
+>>> means = [sum(x)/len(x) for x in samples]
+>>> abs(sum(means)/len(means) - stream_size/2) < eps
+True
+
+
 """
 
 import random
